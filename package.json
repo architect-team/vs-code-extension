@@ -1,0 +1,304 @@
+{
+  "name": "architect-yml",
+  "displayName": "Architect.io",
+  "description": "A dynamic microservices framework for building, connecting, and deploying cloud-native applications",
+  "publisher": "Architect.io",
+  "homepage": "https://Architect.io",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/architect-team/architect-cli"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "activationEvents": [
+    "onLanguage:yaml"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Devin Sag",
+    "email": "devin.sag@architect.io",
+    "url": "https://github.com/devinsag"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Linters",
+    "Snippets",
+    "Formatters"
+  ],
+  "icon": "icon/icon.png",
+  "galleryBanner": {
+    "color": "#55CB64",
+    "theme": "dark"
+  },
+  "tags": [
+    "architect",
+    "architect.io",
+    "YAML",
+    "yaml",
+    "yml",
+    "YML"
+  ],
+  "keywords": [
+    "YAML",
+    "yml",
+    "YML",
+    "yaml",
+    "continuous integration",
+    "CI/CD",
+    "Architect.io",
+    "architect"
+  ],
+  "contributes": {
+    "contributes": {
+      "languages": [
+        {
+          "id": "yaml",
+          "icon": {
+            "light": "icon/favicon.ico",
+            "dark": "icon/favicon.ico"
+          },
+          "aliases": [
+            "Architect.io",
+            "architect.io",
+            "architect-yml",
+            "Architect-yml"
+          ],
+          "filenamePatterns": [
+            "architect.yml",
+            "architect.yaml"
+          ],
+          "extensions": [
+            ".yml",
+            ".eyaml",
+            ".eyml",
+            ".yaml"
+          ],
+          "filenames": [
+            ".clang-format",
+            "_clang-format"
+          ],
+          "firstLine": "^#cloud-config",
+          "configuration": "./language-configuration.json"
+        }
+      ],
+      "grammars": [
+        {
+          "language": "yaml",
+          "scopeName": "source.yaml",
+          "path": "./syntaxes/yaml.tmLanguage.json"
+        }
+      ]
+    }
+  },
+  "main": "./dist/extension",
+  "browser": "./dist/extension-web",
+  "configuration": {
+    "title:": "YAML",
+    "properties": {
+      "redhat.telemetry.enabled": {
+        "type": "boolean",
+        "default": false,
+        "markdownDescription": "Enable usage data and errors to be sent to Red Hat servers. Read our [privacy statement](https://developers.redhat.com/article/tool-data-collection).",
+        "scope": "window",
+        "tags": [
+          "telemetry",
+          "usesOnlineServices"
+        ]
+      },
+      "yaml.yamlVersion": {
+        "type": "string",
+        "default": "1.2",
+        "enum": [
+          "1.1",
+          "1.2"
+        ],
+        "markdownDescription": "Default YAML spec version"
+      },
+      "yaml.trace.server": {
+        "type": "string",
+        "enum": [
+          "off",
+          "messages",
+          "verbose"
+        ],
+        "default": "off",
+        "description": "Traces the communication between VSCode and the YAML language service."
+      },
+      "yaml.schemas": {
+        "type": "object",
+        "default": {
+          "https://raw.githubusercontent.com/architect-team/architect-cli/master/src/dependency-manager/schema/architect.schema.json": ["architect.yml", ".architect.yml"]
+        },
+        "description": "Associate schemas to YAML files in the current workspace"
+      },
+      "yaml.format.enable": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable/disable default YAML formatter"
+      },
+      "yaml.format.singleQuote": {
+        "type": "boolean",
+        "default": false,
+        "description": "Use single quotes instead of double quotes"
+      },
+      "yaml.format.bracketSpacing": {
+        "type": "boolean",
+        "default": true,
+        "description": "Print spaces between brackets in objects"
+      },
+      "yaml.format.proseWrap": {
+        "type": "string",
+        "default": "preserve",
+        "enum": [
+          "preserve",
+          "never",
+          "always"
+        ],
+        "description": "Always: wrap prose if it exceeds the print width, Never: never wrap the prose, Preserve: wrap prose as-is"
+      },
+      "yaml.format.printWidth": {
+        "type": "integer",
+        "default": 80,
+        "description": "Specify the line length that the printer will wrap on"
+      },
+      "yaml.validate": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable/disable validation feature"
+      },
+      "yaml.hover": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable/disable hover feature"
+      },
+      "yaml.completion": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable/disable completion feature"
+      },
+      "yaml.customTags": {
+        "type": "array",
+        "default": [],
+        "description": "Custom tags for the parser to use"
+      },
+      "yaml.schemaStore.enable": {
+        "type": "boolean",
+        "default": true,
+        "description": "Automatically pull available YAML schemas from JSON Schema Store"
+      },
+      "yaml.schemaStore.url": {
+        "type": "string",
+        "default": "https://www.schemastore.org/api/json/catalog.json",
+        "description": "URL of schema store catalog to use"
+      },
+      "yaml.disableAdditionalProperties": {
+        "type": "boolean",
+        "default": false,
+        "description": "Globally set additionalProperties to false for all objects. So if its true, no extra properties are allowed inside yaml."
+      },
+      "yaml.disableDefaultProperties": {
+        "type": "boolean",
+        "default": false,
+        "description": "Disable adding not required properties with default values into completion text."
+      },
+      "yaml.maxItemsComputed": {
+        "type": "integer",
+        "default": 5000,
+        "description": "The maximum number of outline symbols and folding regions computed (limited for performance reasons)."
+      },
+      "yaml.suggest.parentSkeletonSelectedFirst": {
+        "type": "boolean",
+        "default": false,
+        "description": "If true, the user must select some parent skeleton first before autocompletion starts to suggest the rest of the properties. When yaml object is not empty, autocompletion ignores this setting and returns all properties and skeletons"
+      },
+      "yaml.style.flowMapping": {
+        "type": "string",
+        "enum": [
+          "allow",
+          "forbid"
+        ],
+        "default": "allow",
+        "description": "Forbid flow style mappings"
+      },
+      "yaml.style.flowSequence": {
+        "type": "string",
+        "enum": [
+          "allow",
+          "forbid"
+        ],
+        "default": "allow",
+        "description": "Forbid flow style sequences"
+      }
+    }
+  },
+  "extensionDependencies": [],
+  "scripts": {
+    "build": "yarn run clean && yarn run lint --fix && yarn run vscode:prepublish",
+    "check-dependencies": "node ./scripts/check-dependencies.js",
+    "clean": "rimraf out && rimraf dist",
+    "compile": "webpack --mode none",
+    "format": "prettier --write .",
+    "lint": "eslint -c .eslintrc.js --ext .ts src test",
+    "test": "yarn test-compile && sh scripts/e2e.sh",
+    "ui-test": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
+    "vscode:prepublish": "webpack --mode production",
+    "watch": "webpack --mode development --watch --info-verbosity verbose",
+    "test-compile": "yarn clean && tsc -p ./ && webpack --mode development",
+    "run-in-chromium": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/fs-extra": "^9.0.6",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^12.12.6",
+    "@types/sinon": "^10.0.6",
+    "@types/sinon-chai": "^3.2.5",
+    "@types/vscode": "^1.63.0",
+    "@types/webpack": "^4.4.10",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "@vscode/test-web": "0.0.11",
+    "buffer": "^6.0.3",
+    "chai": "^4.2.0",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "glob": "^7.1.6",
+    "mocha": "^9.1.2",
+    "path-browserify": "^1.0.1",
+    "prettier": "2.2.1",
+    "process": "^0.11.10",
+    "rimraf": "^3.0.2",
+    "sinon": "^12.0.1",
+    "sinon-chai": "^3.7.0",
+    "ts-loader": "^9.2.5",
+    "ts-node": "^3.3.0",
+    "typescript": "4.4.3",
+    "umd-compat-loader": "^2.1.2",
+    "url": "^0.11.0",
+    "util": "^0.12.4",
+    "vscode-extension-tester": "^4.2.5",
+    "vscode-test": "^1.4.0",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "dependencies": {
+    "@redhat-developer/vscode-redhat-telemetry": "0.5.2",
+    "fs-extra": "^9.1.0",
+    "request-light": "^0.5.7",
+    "vscode-languageclient": "7.0.0",
+    "vscode-nls": "^3.2.1",
+    "vscode-uri": "^2.0.3",
+    "yaml-language-server": "next"
+  }
+}
