@@ -3,7 +3,7 @@
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/architect.io.architect-yaml?style=for-the-badge&logo=microsoft)](https://marketplace.visualstudio.com/items?itemName=architect.io.architect-yaml)
 [![License](https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge)](https://github.com/architect-team/vs-code-extension/blob/main/LICENSE)
 
-Adds YAML Language support, and syntax highlighting and validation when editing or creating `architect.yml` files to Visual Studio Code.
+Adds YAML Language support, syntax highlighting and validation when editing or creating `architect.yml` files in Visual Studio Code.
 
 Architect is the world's first [DevOps-as-a-Service](//architect.io/product) toolset designed to help democratize environment provisioning for engineers. With Architect, anyone can deploy any service, anywhere, for any reason with the push of a button.
 
