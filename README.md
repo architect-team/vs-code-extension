@@ -1,7 +1,7 @@
 # Architect.io YAML
 [![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/architect.io.architect-yml?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=architect.io.architect.yml)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/architect.io.architect-yaml?style=for-the-badge&logo=microsoft)](https://marketplace.visualstudio.com/items?itemName=architect.io.architect-yaml)
-[![License](https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge)](https://github.com/architect-team/vs-code-extension/blob/main/LICENSE.md)
+[![License](https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge)](https://github.com/architect-team/vs-code-extension/blob/main/LICENSE)
 
 &nbsp;\
 Architect is the world's first [DevOps-as-a-Service](//architect.io/product) toolset designed to help democratize environment provisioning for engineers. With Architect, anyone can deploy any service, anywhere, for any reason with the push of a button.
@@ -12,17 +12,16 @@ Architect's CLI, which provides the full developer experience needed to create [
 
 This extension contributes to the language yaml, and offers syntax highlighting and validation when editing or creating `architect.yml` files.
 
-&nbsp;
 # Requirements
 * [**Node.js** `v12`](//nodejs.org/en/download/) or higher must be installed
 
-&nbsp;
+
 # YAML Schema
 This document describes the full specification of the [architect.yml](https://docs.architect.io/components/architect-yml) configuration file. The top level of your `architect.yml` should be a [ComponentSpec](#componentspec). We've published a formal definition of this specification here: [Architect JSONSchema](https://raw.githubusercontent.com/architect-team/architect-cli/master/src/dependency-manager/schema/architect.schema.json).
 
 >**Note**: all references to the `Dict<T>` type below refer to a key-value map where the keys are strings and the values are of type T.
 
-&nbsp;
+
 # ComponentSpec
 
 The top level object of the `architect.yml`; defines a deployable Architect Component.
@@ -43,7 +42,7 @@ The top level object of the `architect.yml`; defines a deployable Architect Comp
  | ~~`interfaces`~~ | Dict&lt;string&gt; | A set of named gateways that broker access to the services inside the component. All network traffic within a component is locked down to the component itself, unless included in this interfaces block. An interface represents a front-door to your component, granting access to upstream callers. | <a target="_blank" href="https://regexr.com/?expression=%5E(%3F!-)(%3F!.%7B0%2C32%7D--)%5Ba-z0-9-%5D%7B1%2C32%7D(%3F%3C!-)%24">KeyRegex</a>, <a target="_blank" href="https://regexr.com/?expression=undefined">ValueRegex</a>, Deprecated |
  | ~~`artifact_image`~~ | string | - | Deprecated |
 
-&nbsp;
+
 # ServiceSpec
 
 A runtimes (e.g. daemons, servers, etc.). Each service is independently deployable and scalable. Services are 1:1 with a docker image.
@@ -70,7 +69,7 @@ A runtimes (e.g. daemons, servers, etc.). Each service is independently deployab
  | `labels` | Dict&lt;string&gt; | A simple key-value annotation store; useful to organize, categorize, scope, and select services and tasks. | <a target="_blank" href="https://regexr.com/?expression=%5E(%3F%3D(.%7B1%2C63%7D%2F)%3F.%7B1%2C63%7D%24)(((%5Ba-z0-9%5D%5B-a-z0-9_.%5D*)%3F%5Ba-z0-9%5D)%3F%2F)%3F((%5BA-Za-z0-9%5D%5B-A-Za-z0-9_.%5D*)%3F%5BA-Za-z0-9%5D)%3F%24">KeyRegex</a>, <a target="_blank" href="https://regexr.com/?expression=undefined">ValueRegex</a>, [More](https://docs.architect.io/components/services/#labels) |
  | `reserved_name` | string | A specific service name which will override the service name specified in the component. | Must match: <a target="_blank" href="https://regexr.com/?expression=%5E(%3F!-)(%3F!.%7B0%2C32%7D--)%5Ba-z0-9-%5D%7B1%2C32%7D(%3F%3C!-)%24">Regex</a> |
 
-&nbsp;
+
 # SecretDefinitionSpec
 
 Components can define configurable secrets that can be used to enrich the contained services with environment-specific information (i.e. environment variables).
@@ -81,7 +80,7 @@ Components can define configurable secrets that can be used to enrich the contai
  | `description` | string | A human-friendly description of the secret. |  |
  | `default` | Array&lt;any&gt; \| boolean \| number \| object \| string \| null \| [Expression](https://docs.architect.io/reference/contexts) | Sets a default value for the secret if one is not provided |  |
 
-&nbsp;
+
 # ComponentInterfaceSpec
 
 Component Interfaces are the primary means by which components advertise their resolvable addresses to others. Interfaces are the only means by which other components can communicate with your component.
@@ -98,7 +97,7 @@ Component Interfaces are the primary means by which components advertise their r
  | `url`* | string \| [Expression](https://docs.architect.io/reference/contexts) | The url that the component interface should forward to. |  |
  | `sticky` | boolean \| [Expression](https://docs.architect.io/reference/contexts) | If this interface is made into an external ingress, sticky=true will denote the gateway should use sticky sessions if more than one replica is running. |  |
 
-&nbsp;
+
 # TaskSpec
 
 A Task represents a recurring and/or exiting runtime (e.g. crons, schedulers, triggered jobs). Each task will run on its specified schedule and/or be triggerable via the Architect CLI. Tasks are 1:1 with a docker image.
@@ -120,7 +119,7 @@ A Task represents a recurring and/or exiting runtime (e.g. crons, schedulers, tr
  | `labels` | Dict&lt;string&gt; | A simple key-value annotation store; useful to organize, categorize, scope, and select services and tasks. | <a target="_blank" href="https://regexr.com/?expression=%5E(%3F%3D(.%7B1%2C63%7D%2F)%3F.%7B1%2C63%7D%24)(((%5Ba-z0-9%5D%5B-a-z0-9_.%5D*)%3F%5Ba-z0-9%5D)%3F%2F)%3F((%5BA-Za-z0-9%5D%5B-A-Za-z0-9_.%5D*)%3F%5BA-Za-z0-9%5D)%3F%24">KeyRegex</a>, <a target="_blank" href="https://regexr.com/?expression=undefined">ValueRegex</a>, [More](https://docs.architect.io/components/services/#labels) |
  | `reserved_name` | string | A specific service name which will override the service name specified in the component. | Must match: <a target="_blank" href="https://regexr.com/?expression=%5E(%3F!-)(%3F!.%7B0%2C32%7D--)%5Ba-z0-9-%5D%7B1%2C32%7D(%3F%3C!-)%24">Regex</a> |
 
-&nbsp;
+
 # LivenessProbeSpec
 
 Configuration for service health checks. Architect uses health checks are used for load balancing and rolling updates.
@@ -136,7 +135,7 @@ Configuration for service health checks. Architect uses health checks are used f
  | `command` | Array&lt;string&gt; \| string | Command that runs the http check. This field is disjunctive with `path` and `port` (only one of `command` or `path`/`port` can be set). |  |
  | ~~`port`~~ | number \| [Expression](https://docs.architect.io/reference/contexts) | [Deprecated: use `command` instead.] Port that the http check will run against. If `port` is set, `path` also must be set. This field is disjunctive with `command` (only one of `port` or `command` can be set). | Deprecated |
 
-&nbsp;
+
 # VolumeSpec
 
 Architect can mount volumes onto your services and tasks to store data that should be shared between running containers or that should persist beyond the lifetime of a container.
@@ -149,7 +148,7 @@ Architect can mount volumes onto your services and tasks to store data that shou
  | `description` | string | Human-readable description of volume |  |
  | `readonly` | boolean \| [Expression](https://docs.architect.io/reference/contexts) | Marks the volume as readonly. |  |
 
-&nbsp;
+
 # BuildSpec
 
 An object containing the details necessary for Architect to build the service via Docker. Whenever a service that specifies a build field is registered with Architect, the CLI will trigger a docker build and replace the build field with a resolvable image.
@@ -161,7 +160,7 @@ An object containing the details necessary for Architect to build the service vi
  | `dockerfile` | string \| [Expression](https://docs.architect.io/reference/contexts) | The path to the Dockerfile relative to the `build.context` | default: `Dockerfile` |
  | `target` | string \| [Expression](https://docs.architect.io/reference/contexts) | The stage to build in the Dockerfile |  |
 
-&nbsp;
+
 # IngressSpec
 
 An ingress exposes an interface to external network traffic through an architect-deployed gateway.
@@ -173,7 +172,7 @@ An ingress exposes an interface to external network traffic through an architect
  | `path` | string \| [Expression](https://docs.architect.io/reference/contexts) | The path of the interface used for path based routing |  |
  | `ip_whitelist` | Array&lt;string \| string&gt; \| [Expression](https://docs.architect.io/reference/contexts) | IP addresses that are allowed to access the interface |  |
 
-&nbsp;
+
 # ScalingMetricsSpec
 
 Scaling metrics define the upper bound of resource consumption before spinning up an additional replica.
@@ -183,7 +182,7 @@ Scaling metrics define the upper bound of resource consumption before spinning u
  | `cpu` | integer \| [Expression](https://docs.architect.io/reference/contexts) | The cpu usage required to trigger scaling. | [More](https://docs.architect.io/components/services/#cpu--memory) |
  | `memory` | integer \| [Expression](https://docs.architect.io/reference/contexts) | The memory usage required to trigger scaling. | [More](https://docs.architect.io/components/services/#cpu--memory) |
 
-&nbsp;
+
 # ScalingSpec
 
 Configuration that dictates the scaling behavior of a service.
@@ -194,7 +193,7 @@ Configuration that dictates the scaling behavior of a service.
  | `max_replicas`* | integer \| [Expression](https://docs.architect.io/reference/contexts) | The target maximum number of service replicas. |  |
  | `metrics`* | [ScalingMetricsSpec](#scalingmetricsspec) |  |  |
 
-&nbsp;
+
 # KubernetesDeploySpec
 
 Configuration that dictates the kubernetes deploy overrides.
@@ -203,7 +202,7 @@ Configuration that dictates the kubernetes deploy overrides.
 | -------------------- | ---------- | -------------- | -------------- |
  | `deployment`* |  |  |  |
 
-&nbsp;
+
 # DeploySpec
 
 Configuration that dictates the deploy overrides.
@@ -212,7 +211,7 @@ Configuration that dictates the deploy overrides.
 | -------------------- | ---------- | -------------- | -------------- |
  | `kubernetes`* | [KubernetesDeploySpec](#kubernetesdeployspec) |  |  |
 
-&nbsp;
+
 # ServiceInterfaceSpec
 
 A service interface exposes service functionality over the network to other services within the same component. If you would like to expose services on the network to external components, see the ComponentInterfaceSpec
@@ -230,7 +229,7 @@ A service interface exposes service functionality over the network to other serv
  | `sticky` | boolean \| [Expression](https://docs.architect.io/reference/contexts) | Denotes that if this interface is made external, the gateway should use sticky sessions |  |
  | `ingress` | [IngressSpec](#ingressspec) |  |  |
 
-&nbsp;
+
 # OutputDefinitionSpec
 
 Components can define output fields that can be used to share configuration with consuming components.
