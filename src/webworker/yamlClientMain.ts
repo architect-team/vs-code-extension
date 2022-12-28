@@ -40,7 +40,6 @@ export async function activate(
     };
 
     const runtime: RuntimeEnvironment = {
-      telemetry: { send: () => undefined, sendStartupEvent: () => undefined },
       schemaCache,
     };
     return startClient(context, newLanguageClient, runtime);

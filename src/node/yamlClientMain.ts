@@ -17,19 +17,12 @@ import {
 } from "vscode-languageclient/node";
 
 import { SchemaExtensionAPI } from "../schema-extension-api";
-
-import { getRedHatService } from "@redhat-developer/vscode-redhat-telemetry";
 import { JSONSchemaCache } from "../json-schema-cache";
 
 // this method is called when vs code is activated
 export async function activate(
   context: ExtensionContext
 ): Promise<SchemaExtensionAPI> {
-  // Create Telemetry Service
-  const telemetry = await (
-    await getRedHatService(context)
-  ).getTelemetryService();
-
   // The YAML language server is implemented in node
   const serverModule = context.asAbsolutePath("./dist/languageserver.js");
 
@@ -56,7 +49,6 @@ export async function activate(
   };
 
   const runtime: RuntimeEnvironment = {
-    telemetry,
     schemaCache: new JSONSchemaCache(
       context.globalStorageUri.fsPath,
       context.globalState

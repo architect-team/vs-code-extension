@@ -11,10 +11,5 @@
     "other": true,
     "comments": true,
     "strings": true
-  },
-  "redhat.telemetry.enabled": false,
-  "yaml.schemas": {
-    "https://raw.githubusercontent.com/architect-team/architect-cli/master/src/dependency-manager/schema/architect.schema.json": "architect.yml"
-  },
-  "yaml.schemaStore.enable": false
+  }
 }

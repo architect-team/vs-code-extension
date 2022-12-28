@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TextDocumentContentProvider, Uri, workspace, window } from "vscode";
+import { TextDocumentContentProvider, Uri, workspace } from "vscode";
 import {
   xhr,
   configure as configureHttpRequests,
@@ -11,7 +11,7 @@ import {
   XHRResponse,
 } from "request-light";
 import { SchemaExtensionAPI } from "./schema-extension-api";
-
+import { ARCHITECT_SCHEMA_URL } from "./schema-extension-api";
 export interface IJSONSchemaCache {
   getETag(schemaUri: string): string | undefined;
   putSchema(
@@ -31,37 +31,21 @@ export class JSONSchemaDocumentContentProvider
   async provideTextDocumentContent(uri: Uri): Promise<string> {
     if (uri.fragment) {
       const origUri = uri.fragment;
-      const schemaUri = Uri.parse(origUri);
-      // handle both 'http' and 'https'
-      if (origUri.startsWith("http")) {
-        return getJsonSchemaContent(origUri, this.schemaCache);
-      } else if (this.schemaApi.hasProvider(schemaUri.scheme)) {
-        let content = this.schemaApi.requestCustomSchemaContent(origUri);
-
-        content = await Promise.resolve(content);
-        // prettify JSON
-        if (content.indexOf("\n") === -1) {
-          content = JSON.stringify(JSON.parse(content), null, 2);
-        }
-
-        return content;
-      } else {
-        window.showErrorMessage(
-          `Cannot Load content for: ${origUri}. Unknown schema: '${schemaUri.scheme}'`
-        );
-        return null;
+      let content = this.schemaApi.requestCustomSchemaContent(origUri);
+      content = await Promise.resolve(content);
+      // prettify JSON
+      if (content.indexOf("\n") === -1) {
+        content = JSON.stringify(JSON.parse(content), null, 2);
       }
-    } else {
-      window.showErrorMessage(`Cannot Load content for: '${uri.toString()}' `);
-      return null;
+      return content;
     }
   }
 }
 
-export async function getJsonSchemaContent(
-  uri: string,
-  schemaCache: IJSONSchemaCache
-): Promise<string> {
+export async function getJsonSchemaContent(): Promise<string> {
+  const schemaCache = this.schemaCache;
+  const uri = ARCHITECT_SCHEMA_URL;
+
   const cachedETag = schemaCache.getETag(uri);
 
   const httpSettings = workspace.getConfiguration("http");
