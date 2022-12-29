@@ -63,10 +63,6 @@
       "languages": [
         {
           "id": "yaml",
-          "icon": {
-            "light": "icon/favicon.ico",
-            "dark": "icon/favicon.ico"
-          },
           "aliases": [
             "Architect.io",
             "architect.io",
@@ -78,7 +74,8 @@
             "architect.yaml"
           ],
           "extensions": [
-            ".yml"
+            ".yml",
+            ".yaml"
           ],
           "configuration": "./language-configuration.json"
         }
@@ -97,16 +94,6 @@
   "configuration": {
     "title:": "YAML",
     "properties": {
-      "yaml.format.enable": {
-        "type": "boolean",
-        "default": true,
-        "description": "Enable/disable default YAML formatter"
-      },
-      "yaml.format.singleQuote": {
-        "type": "boolean",
-        "default": false,
-        "description": "Use single quotes instead of double quotes"
-      },
       "yaml.format.bracketSpacing": {
         "type": "boolean",
         "default": true,
@@ -126,34 +113,6 @@
         "type": "integer",
         "default": 80,
         "description": "Specify the line length that the printer will wrap on"
-      },
-      "yaml.maxItemsComputed": {
-        "type": "integer",
-        "default": 5000,
-        "description": "The maximum number of outline symbols and folding regions computed (limited for performance reasons)."
-      },
-      "yaml.suggest.parentSkeletonSelectedFirst": {
-        "type": "boolean",
-        "default": false,
-        "description": "If true, the user must select some parent skeleton first before autocompletion starts to suggest the rest of the properties. When yaml object is not empty, autocompletion ignores this setting and returns all properties and skeletons"
-      },
-      "yaml.style.flowMapping": {
-        "type": "string",
-        "enum": [
-          "allow",
-          "forbid"
-        ],
-        "default": "allow",
-        "description": "Forbid flow style mappings"
-      },
-      "yaml.style.flowSequence": {
-        "type": "string",
-        "enum": [
-          "allow",
-          "forbid"
-        ],
-        "default": "allow",
-        "description": "Forbid flow style sequences"
       }
     }
   },
@@ -209,7 +168,6 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "@redhat-developer/vscode-redhat-telemetry": "0.5.2",
     "fs-extra": "^9.1.0",
     "request-light": "^0.5.7",
     "vscode-languageclient": "7.0.0",

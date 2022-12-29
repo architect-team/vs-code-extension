@@ -181,7 +181,7 @@ class SchemaExtensionAPI implements ExtensionAPI {
 // constants
 export const CUSTOM_SCHEMA_REQUEST = "custom/schema/request";
 export const CUSTOM_CONTENT_REQUEST = "custom/schema/content";
-export const ARCHITECT_SCHEMA_URL =
+export const ARCHITECT_SCHEMA_URI =
   "https://raw.githubusercontent.com/architect-team/architect-cli/main/src/dependency-manager/schema/architect.schema.json";
 
 export { SchemaExtensionAPI };

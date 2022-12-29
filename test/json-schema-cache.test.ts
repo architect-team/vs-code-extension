@@ -47,7 +47,7 @@ describe("JSON Schema Cache Tests", () => {
       "/some/path/",
       (memento as unknown) as vscode.Memento
     );
-    const result = await cache.getSchema("/some/uri");
+    const result = await cache.getSchema();
     expect(result).is.undefined;
     expect(memento.update).calledOnceWith("json-schema-key", {});
   });
@@ -67,7 +67,7 @@ describe("JSON Schema Cache Tests", () => {
       "/some/path/",
       (memento as unknown) as vscode.Memento
     );
-    const result = await cache.getSchema("/some/uri");
+    const result = await cache.getSchema();
     expect(result).is.undefined;
     expect(memento.update).calledOnceWith("json-schema-key", mementoData);
   });

@@ -33,16 +33,6 @@ export interface ISchemaAssociation {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-namespace SettingIds {
-  export const maxItemsComputed = "yaml.maxItemsComputed";
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace StorageIds {
-  export const maxItemsExceededInformation = "yaml.maxItemsExceededInformation";
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace VSCodeContentRequest {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export const type: RequestType<string, string, any> = new RequestType(
@@ -55,24 +45,6 @@ namespace FSReadFile {
   // eslint-disable-next-line @typescript-eslint/ban-types
   export const type: RequestType<string, string, {}> = new RequestType(
     "fs/readFile"
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace ResultLimitReachedNotification {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  export const type: NotificationType<string> = new NotificationType(
-    "yaml/resultLimitReached"
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace SchemaSelectionRequests {
-  export const type: NotificationType<void> = new NotificationType(
-    "yaml/supportSchemaSelection"
-  );
-  export const schemaStoreInitialized: NotificationType<void> = new NotificationType(
-    "yaml/schema/store/initialized"
   );
 }
 
@@ -98,10 +70,13 @@ export function startClient(
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for on disk and newly created YAML documents
-    documentSelector: [{ language: "yaml" }, { pattern: "architect.yml" }],
+    documentSelector: [{ language: "yaml" }, { pattern: "architect.y(a)ml" }],
     synchronize: {
       // Notify the server about file changes to YAML and JSON files contained in the workspace
-      fileEvents: [workspace.createFileSystemWatcher("**/architect.yml")],
+      fileEvents: [
+        workspace.createFileSystemWatcher("**/architect.?(e)y?(a)ml"),
+        workspace.createFileSystemWatcher("**/*.json"),
+      ],
     },
     revealOutputChannelOn: RevealOutputChannelOn.Never,
   };
@@ -128,47 +103,13 @@ export function startClient(
 
   client.onReady().then(() => {
     client.onRequest(VSCodeContentRequest.type, () => {
-      return getJsonSchemaContent();
+      return getJsonSchemaContent(runtime.schemaCache);
     });
     client.onRequest(FSReadFile.type, (fsPath: string) => {
       return workspace.fs
         .readFile(Uri.file(fsPath))
         .then((uint8array) => new TextDecoder().decode(uint8array));
     });
-
-    // Adapted from:
-    // https://github.com/microsoft/vscode/blob/94c9ea46838a9a619aeafb7e8afd1170c967bb55/extensions/json-language-features/client/src/jsonClient.ts#L305-L318
-    client.onNotification(
-      ResultLimitReachedNotification.type,
-      async (message) => {
-        const shouldPrompt =
-          context.globalState.get<boolean>(
-            StorageIds.maxItemsExceededInformation
-          ) !== false;
-        if (shouldPrompt) {
-          const ok = "Ok";
-          const openSettings = "Open Settings";
-          const neverAgain = "Don't Show Again";
-          const pick = await window.showInformationMessage(
-            `${message}\nUse setting '${SettingIds.maxItemsComputed}' to configure the limit.`,
-            ok,
-            openSettings,
-            neverAgain
-          );
-          if (pick === neverAgain) {
-            await context.globalState.update(
-              StorageIds.maxItemsExceededInformation,
-              false
-            );
-          } else if (pick === openSettings) {
-            await commands.executeCommand(
-              "workbench.action.openSettings",
-              SettingIds.maxItemsComputed
-            );
-          }
-        }
-      }
-    );
   });
 
   return schemaExtensionAPI;

@@ -9,6 +9,7 @@ import * as crypto from "crypto";
 import { Memento } from "vscode";
 import { logToExtensionOutputChannel } from "./extension";
 import { IJSONSchemaCache } from "./json-schema-content-provider";
+import { ARCHITECT_SCHEMA_URI } from "./schema-extension-api";
 
 const CACHE_DIR = "schemas_cache";
 const CACHE_KEY = "json-schema-key";
@@ -57,49 +58,43 @@ export class JSONSchemaCache implements IJSONSchemaCache {
     return path.join(this.cachePath, hashedURI);
   }
 
-  getETag(schemaUri: string): string | undefined {
+  getETag(): string | undefined {
     if (!this.isInitialized) {
       return undefined;
     }
-    return this.cache[schemaUri]?.eTag;
+    return this.cache[ARCHITECT_SCHEMA_URI]?.eTag;
   }
 
-  async putSchema(
-    schemaUri: string,
-    eTag: string,
-    schemaContent: string
-  ): Promise<void> {
+  async putSchema(eTag: string, schemaContent: string): Promise<void> {
     if (!this.isInitialized) {
       await this.init();
     }
-    if (!this.cache[schemaUri]) {
-      this.cache[schemaUri] = {
+    if (!this.cache[ARCHITECT_SCHEMA_URI]) {
+      this.cache[ARCHITECT_SCHEMA_URI] = {
         eTag,
-        schemaPath: this.getCacheFilePath(schemaUri),
+        schemaPath: this.getCacheFilePath(ARCHITECT_SCHEMA_URI),
       };
     } else {
-      this.cache[schemaUri].eTag = eTag;
+      this.cache[ARCHITECT_SCHEMA_URI].eTag = eTag;
     }
     try {
-      const cacheFile = this.cache[schemaUri].schemaPath;
+      const cacheFile = this.cache[ARCHITECT_SCHEMA_URI].schemaPath;
       await fs.writeFile(cacheFile, schemaContent);
-
       await this.memento.update(CACHE_KEY, this.cache);
     } catch (err) {
-      delete this.cache[schemaUri];
+      delete this.cache[ARCHITECT_SCHEMA_URI];
       logToExtensionOutputChannel(err);
     }
   }
 
-  async getSchema(schemaUri: string): Promise<string | undefined> {
+  async getSchema(): Promise<string | undefined> {
     if (!this.isInitialized) {
       await this.init();
     }
-    const cacheFile = this.cache[schemaUri]?.schemaPath;
+    const cacheFile = this.cache[ARCHITECT_SCHEMA_URI]?.schemaPath;
     if (await fs.pathExists(cacheFile)) {
       return await fs.readFile(cacheFile, { encoding: "UTF8" });
     }
-
     return undefined;
   }
 }
