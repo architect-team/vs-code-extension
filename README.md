@@ -14,8 +14,7 @@ Architect's CLI, which provides the full developer experience needed to create [
 # Requirements
 * [**Node.js** `v12`](//nodejs.org/en/download/) or higher must be installed
 
-
 # YAML Schema
-For additional information describing the full specification of the architect.yml configuration file, please view [the architect yml reference guide](https://docs.architect.io/reference/architect-yml/). 
+For additional information describing the full specification of the architect.yml configuration file, please view [the architect yml reference guide](https://docs.architect.io/reference/architect-yml/).
 
 Additionally, we've published a formal definition of this specification here: [Architect JSONSchema](https://raw.githubusercontent.com/architect-team/architect-cli/master/src/dependency-manager/schema/architect.schema.json).
