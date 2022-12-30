@@ -6,11 +6,10 @@
  *--------------------------------------------------------------------------------------------*/
 "use strict";
 
-import { workspace, ExtensionContext, window, commands, Uri } from "vscode";
+import { workspace, ExtensionContext, Uri } from "vscode";
 import {
   CommonLanguageClient,
   LanguageClientOptions,
-  NotificationType,
   RequestType,
   RevealOutputChannelOn,
 } from "vscode-languageclient";
