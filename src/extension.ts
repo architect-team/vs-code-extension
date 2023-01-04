@@ -2,6 +2,7 @@
  *  Copyright (c) Red Hat, Inc. All rights reserved.
  *  Copyright (c) Adam Voss. All rights reserved.
  *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Copyright (c) Architect.io. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 "use strict";
@@ -13,23 +14,8 @@ import {
   RequestType,
   RevealOutputChannelOn,
 } from "vscode-languageclient";
-import { SchemaExtensionAPI } from "./schema-extension-api";
-import {
-  getJsonSchemaContent,
-  IJSONSchemaCache,
-  JSONSchemaDocumentContentProvider,
-} from "./json-schema-content-provider";
-
+import { getSchemaContent, IArchitectioSchemaCache } from "./content-provider";
 import { TextDecoder } from "util";
-
-export interface ISchemaAssociations {
-  [pattern: string]: string[];
-}
-
-export interface ISchemaAssociation {
-  fileMatch: string[];
-  uri: string;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace VSCodeContentRequest {
@@ -49,60 +35,61 @@ namespace FSReadFile {
 
 let client: CommonLanguageClient;
 
-const lsName = "YAML Support";
-
-export type LanguageClientConstructor = (
+export type ArchitectioLanguageClientConstructor = (
   name: string,
   description: string,
   clientOptions: LanguageClientOptions
 ) => CommonLanguageClient;
 
 export interface RuntimeEnvironment {
-  readonly schemaCache: IJSONSchemaCache;
+  readonly schemaCache: IArchitectioSchemaCache;
 }
 
 export function startClient(
   context: ExtensionContext,
-  newLanguageClient: LanguageClientConstructor,
+  newArchitectioLanguageClient: ArchitectioLanguageClientConstructor,
   runtime: RuntimeEnvironment
-): SchemaExtensionAPI {
+): void {
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for on disk and newly created YAML documents
-    documentSelector: [{ language: "yaml" }, { pattern: "architect.y(a)ml" }],
+    documentSelector: [
+      {
+        language: "yaml",
+      },
+      {
+        language: "architectio",
+      },
+      {
+        pattern: "(.)architect.y(a)ml",
+      },
+    ],
     synchronize: {
-      // Notify the server about file changes to YAML and JSON files contained in the workspace
+      // Notify the server about file changes to YAML files contained in the workspace
       fileEvents: [
-        workspace.createFileSystemWatcher("**/architect.?(e)y?(a)ml"),
-        workspace.createFileSystemWatcher("**/*.json"),
+        workspace.createFileSystemWatcher("**/architect.y?(a)ml"),
+        workspace.createFileSystemWatcher("**/*.architect.y?(a)ml"),
       ],
     },
     revealOutputChannelOn: RevealOutputChannelOn.Never,
   };
 
   // Create the language client and start it
-  client = newLanguageClient("yaml", lsName, clientOptions);
+  client = newArchitectioLanguageClient(
+    "Architect.io",
+    "Architect.io",
+    clientOptions
+  );
 
   const disposable = client.start();
-
-  const schemaExtensionAPI = new SchemaExtensionAPI(client);
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
   context.subscriptions.push(disposable);
-  context.subscriptions.push(
-    workspace.registerTextDocumentContentProvider(
-      "json-schema",
-      new JSONSchemaDocumentContentProvider(
-        runtime.schemaCache,
-        schemaExtensionAPI
-      )
-    )
-  );
 
   client.onReady().then(() => {
     client.onRequest(VSCodeContentRequest.type, () => {
-      return getJsonSchemaContent(runtime.schemaCache);
+      return getSchemaContent(runtime.schemaCache);
     });
     client.onRequest(FSReadFile.type, (fsPath: string) => {
       return workspace.fs
@@ -110,8 +97,6 @@ export function startClient(
         .then((uint8array) => new TextDecoder().decode(uint8array));
     });
   });
-
-  return schemaExtensionAPI;
 }
 
 export function logToExtensionOutputChannel(message: string): void {

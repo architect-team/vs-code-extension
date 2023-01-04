@@ -1,12 +1,13 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Copyright (c) Architect.io. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
 import { ExtensionContext } from "vscode";
 import {
   startClient,
-  LanguageClientConstructor,
+  ArchitectioLanguageClientConstructor,
   RuntimeEnvironment,
 } from "../extension";
 import {
@@ -15,14 +16,10 @@ import {
   LanguageClientOptions,
   LanguageClient,
 } from "vscode-languageclient/node";
-
-import { SchemaExtensionAPI } from "../schema-extension-api";
-import { JSONSchemaCache } from "../json-schema-cache";
+import { ArchitectioSchemaCache } from "../cache";
 
 // this method is called when vs code is activated
-export async function activate(
-  context: ExtensionContext
-): Promise<SchemaExtensionAPI> {
+export async function activate(context: ExtensionContext): Promise<void> {
   // The YAML language server is implemented in node
   const serverModule = context.asAbsolutePath("./dist/languageserver.js");
 
@@ -40,7 +37,7 @@ export async function activate(
     },
   };
 
-  const newLanguageClient: LanguageClientConstructor = (
+  const newArchitectioLanguageClient: ArchitectioLanguageClientConstructor = (
     id: string,
     name: string,
     clientOptions: LanguageClientOptions
@@ -49,11 +46,11 @@ export async function activate(
   };
 
   const runtime: RuntimeEnvironment = {
-    schemaCache: new JSONSchemaCache(
+    schemaCache: new ArchitectioSchemaCache(
       context.globalStorageUri.fsPath,
       context.globalState
     ),
   };
 
-  return startClient(context, newLanguageClient, runtime);
+  startClient(context, newArchitectioLanguageClient, runtime);
 }

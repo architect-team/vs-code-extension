@@ -1,5 +1,6 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Red Hat, Inc. All rights reserved.
+ *  Copyright (c) Architect.io. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
@@ -8,30 +9,31 @@ import * as path from "path";
 import * as crypto from "crypto";
 import { Memento } from "vscode";
 import { logToExtensionOutputChannel } from "./extension";
-import { IJSONSchemaCache } from "./json-schema-content-provider";
-import { ARCHITECT_SCHEMA_URI } from "./schema-extension-api";
-
-const CACHE_DIR = "schemas_cache";
-const CACHE_KEY = "json-schema-key";
+import { IArchitectioSchemaCache } from "./content-provider";
+import {
+  ARCHITECTIO_CACHE_DIR,
+  ARCHITECTIO_CACHE_KEY,
+  ARCHITECTIO_SCHEMA_URI,
+} from "./constants";
 
 interface CacheEntry {
   eTag: string;
   schemaPath: string;
 }
 
-interface SchemaCache {
+interface ArchitectioSchemaCacheEntry {
   [uri: string]: CacheEntry;
 }
 
-export class JSONSchemaCache implements IJSONSchemaCache {
+export class ArchitectioSchemaCache implements IArchitectioSchemaCache {
   private readonly cachePath: string;
-  private readonly cache: SchemaCache;
+  private readonly cache: ArchitectioSchemaCacheEntry;
 
   private isInitialized = false;
 
   constructor(globalStoragePath: string, private memento: Memento) {
-    this.cachePath = path.join(globalStoragePath, CACHE_DIR);
-    this.cache = memento.get(CACHE_KEY, {});
+    this.cachePath = path.join(globalStoragePath, ARCHITECTIO_CACHE_DIR);
+    this.cache = memento.get(ARCHITECTIO_CACHE_KEY, {});
   }
 
   private async init(): Promise<void> {
@@ -47,7 +49,7 @@ export class JSONSchemaCache implements IJSONSchemaCache {
         }
       }
     }
-    await this.memento.update(CACHE_KEY, this.cache);
+    await this.memento.update(ARCHITECTIO_CACHE_KEY, this.cache);
     this.isInitialized = true;
   }
 
@@ -62,27 +64,27 @@ export class JSONSchemaCache implements IJSONSchemaCache {
     if (!this.isInitialized) {
       return undefined;
     }
-    return this.cache[ARCHITECT_SCHEMA_URI]?.eTag;
+    return this.cache[ARCHITECTIO_SCHEMA_URI]?.eTag;
   }
 
   async putSchema(eTag: string, schemaContent: string): Promise<void> {
     if (!this.isInitialized) {
       await this.init();
     }
-    if (!this.cache[ARCHITECT_SCHEMA_URI]) {
-      this.cache[ARCHITECT_SCHEMA_URI] = {
+    if (!this.cache[ARCHITECTIO_SCHEMA_URI]) {
+      this.cache[ARCHITECTIO_SCHEMA_URI] = {
         eTag,
-        schemaPath: this.getCacheFilePath(ARCHITECT_SCHEMA_URI),
+        schemaPath: this.getCacheFilePath(ARCHITECTIO_SCHEMA_URI),
       };
     } else {
-      this.cache[ARCHITECT_SCHEMA_URI].eTag = eTag;
+      this.cache[ARCHITECTIO_SCHEMA_URI].eTag = eTag;
     }
     try {
-      const cacheFile = this.cache[ARCHITECT_SCHEMA_URI].schemaPath;
+      const cacheFile = this.cache[ARCHITECTIO_SCHEMA_URI].schemaPath;
       await fs.writeFile(cacheFile, schemaContent);
-      await this.memento.update(CACHE_KEY, this.cache);
+      await this.memento.update(ARCHITECTIO_CACHE_KEY, this.cache);
     } catch (err) {
-      delete this.cache[ARCHITECT_SCHEMA_URI];
+      delete this.cache[ARCHITECTIO_SCHEMA_URI];
       logToExtensionOutputChannel(err);
     }
   }
@@ -91,7 +93,7 @@ export class JSONSchemaCache implements IJSONSchemaCache {
     if (!this.isInitialized) {
       await this.init();
     }
-    const cacheFile = this.cache[ARCHITECT_SCHEMA_URI]?.schemaPath;
+    const cacheFile = this.cache[ARCHITECTIO_SCHEMA_URI]?.schemaPath;
     if (await fs.pathExists(cacheFile)) {
       return await fs.readFile(cacheFile, { encoding: "UTF8" });
     }
