@@ -1,7 +1,5 @@
 <p align="center">
-  <picture>
-    <img width="320" alt="Architect Logo" src="https://cdn.architect.io/logo/horizontal-inverted.png">
-  </picture>
+  <img width="320" alt="Architect Logo" src="https://cdn.architect.io/logo/horizontal-inverted.png">
 </p>
 
 <p align="center">
