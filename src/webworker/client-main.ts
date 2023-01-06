@@ -5,7 +5,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ExtensionContext } from "vscode";
-import { LanguageClientOptions } from "vscode-languageclient";
+import {
+  BaseLanguageClient,
+  LanguageClientOptions,
+} from "vscode-languageclient";
 import {
   startClient,
   ArchitectioLanguageClientConstructor,
@@ -15,7 +18,9 @@ import { LanguageClient } from "vscode-languageclient/browser";
 import { IArchitectioSchemaCache } from "../content-provider";
 
 // this method is called when vs code is activated
-export async function activate(context: ExtensionContext): Promise<void> {
+export async function activate(
+  context: ExtensionContext
+): Promise<BaseLanguageClient> {
   const extensionUri = context.extensionUri;
   const serverMain = extensionUri.with({
     path: extensionUri.path + "/dist/languageserver-web.js",
@@ -39,7 +44,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     const runtime: RuntimeEnvironment = {
       schemaCache: architectSchemaCache,
     };
-    startClient(context, newArchitectioLanguageClient, runtime);
+    return await startClient(context, newArchitectioLanguageClient, runtime);
   } catch (e) {
     console.log(e);
   }

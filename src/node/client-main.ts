@@ -15,16 +15,19 @@ import {
   TransportKind,
   LanguageClientOptions,
   LanguageClient,
+  BaseLanguageClient,
 } from "vscode-languageclient/node";
 import { ArchitectioSchemaCache } from "../cache";
 
 // this method is called when vs code is activated
-export async function activate(context: ExtensionContext): Promise<void> {
+export async function activate(
+  context: ExtensionContext
+): Promise<BaseLanguageClient> {
   // The YAML language server is implemented in node
   const serverModule = context.asAbsolutePath("./dist/languageserver.js");
 
   // The debug options for the server
-  const debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
+  const debugOptions = { execArgv: ["--nolazy", "--inspect=6019"] };
 
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
@@ -52,5 +55,5 @@ export async function activate(context: ExtensionContext): Promise<void> {
     ),
   };
 
-  startClient(context, newArchitectioLanguageClient, runtime);
+  return await startClient(context, newArchitectioLanguageClient, runtime);
 }

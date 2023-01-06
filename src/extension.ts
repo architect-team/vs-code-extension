@@ -9,13 +9,12 @@
 
 import { workspace, ExtensionContext, Uri } from "vscode";
 import {
-  CommonLanguageClient,
+  BaseLanguageClient,
   LanguageClientOptions,
   RequestType,
   RevealOutputChannelOn,
 } from "vscode-languageclient";
 import { getSchemaContent, IArchitectioSchemaCache } from "./content-provider";
-import { TextDecoder } from "util";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace VSCodeContentRequest {
@@ -32,43 +31,34 @@ namespace FSReadFile {
     "fs/readFile"
   );
 }
-
-let client: CommonLanguageClient;
+let client: BaseLanguageClient;
 
 export type ArchitectioLanguageClientConstructor = (
   name: string,
   description: string,
   clientOptions: LanguageClientOptions
-) => CommonLanguageClient;
+) => BaseLanguageClient;
 
 export interface RuntimeEnvironment {
   readonly schemaCache: IArchitectioSchemaCache;
 }
 
-export function startClient(
+export async function startClient(
   context: ExtensionContext,
   newArchitectioLanguageClient: ArchitectioLanguageClientConstructor,
   runtime: RuntimeEnvironment
-): void {
+): Promise<BaseLanguageClient> {
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for on disk and newly created YAML documents
-    documentSelector: [
-      {
-        language: "yaml",
-      },
-      {
-        language: "architectio",
-      },
-      {
-        pattern: "(.)architect.y(a)ml",
-      },
-    ],
+    documentSelector: [{ language: "architectio" }],
     synchronize: {
       // Notify the server about file changes to YAML files contained in the workspace
       fileEvents: [
-        workspace.createFileSystemWatcher("**/architect.y?(a)ml"),
-        workspace.createFileSystemWatcher("**/*.architect.y?(a)ml"),
+        workspace.createFileSystemWatcher("**/architect.yaml"),
+        workspace.createFileSystemWatcher("**/architect.yml"),
+        workspace.createFileSystemWatcher("**/**.architect.yaml"),
+        workspace.createFileSystemWatcher("**/**.architect.yml"),
       ],
     },
     revealOutputChannelOn: RevealOutputChannelOn.Never,
@@ -76,27 +66,23 @@ export function startClient(
 
   // Create the language client and start it
   client = newArchitectioLanguageClient(
-    "Architect.io",
+    "architectio",
     "Architect.io",
     clientOptions
   );
 
-  const disposable = client.start();
+  await client.start();
 
-  // Push the disposable to the context's subscriptions so that the
-  // client can be deactivated on extension deactivation
-  context.subscriptions.push(disposable);
-
-  client.onReady().then(() => {
-    client.onRequest(VSCodeContentRequest.type, () => {
-      return getSchemaContent(runtime.schemaCache);
-    });
-    client.onRequest(FSReadFile.type, (fsPath: string) => {
-      return workspace.fs
-        .readFile(Uri.file(fsPath))
-        .then((uint8array) => new TextDecoder().decode(uint8array));
-    });
+  client.onRequest(VSCodeContentRequest.type, () => {
+    return getSchemaContent(runtime.schemaCache);
   });
+  client.onRequest(FSReadFile.type, (fsPath: string) => {
+    return workspace.fs
+      .readFile(Uri.file(fsPath))
+      .then((uint8array) => new TextDecoder().decode(uint8array));
+  });
+
+  return client;
 }
 
 export function logToExtensionOutputChannel(message: string): void {
