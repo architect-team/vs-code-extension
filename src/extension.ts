@@ -50,10 +50,10 @@ export async function startClient(
 ): Promise<BaseLanguageClient> {
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
-    // Register the server for on disk and newly created YAML documents
+    // Register the server for on disk and newly created architectio documents
     documentSelector: [{ language: "architectio" }],
     synchronize: {
-      // Notify the server about file changes to YAML files contained in the workspace
+      // Notify the server about file changes to architectio files contained in the workspace
       fileEvents: [
         workspace.createFileSystemWatcher("**/architect.yaml"),
         workspace.createFileSystemWatcher("**/architect.yml"),
