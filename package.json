@@ -101,7 +101,7 @@
     "format": "prettier --write .",
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "test": "yarn test-compile",
-    "vscode:prepublish": "webpack --mode production",
+    "vscode:prepublish": "webpack --mode production && patch-package",
     "watch": "webpack --mode development --watch --info-verbosity verbose",
     "test-compile": "yarn clean && tsc -p ./ && webpack --mode development"
   },
@@ -132,6 +132,8 @@
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
+    "patch-package": "^6.5.1",
+    "postinstall-postinstall": "^2.1.0",
     "request-light": "^0.5.7",
     "vscode-languageclient": "^8.0.2",
     "vscode-nls": "^3.2.1",
