@@ -23,7 +23,6 @@
       "outFiles": ["${workspaceRoot}/dist/**/*.js"],
       "preLaunchTask": "compile webpack"
     },
-    // Tests
     {
       "name": "Extension Tests",
       "type": "extensionHost",

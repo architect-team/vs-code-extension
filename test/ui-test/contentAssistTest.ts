@@ -51,7 +51,7 @@ export function contentAssistSuggestionTest(): void {
         return await utils.getSchemaLabel(YamlConstants.UI_MOCK_LANGUAGE);
       }, 10000)) as WebElement | undefined;
 
-      await Utilities.sleep(1000);
+      await Utilities.sleep(2000);
       const save_file_editor = new TextEditor();
       const contentAssist = await save_file_editor.toggleContentAssist(true);
 

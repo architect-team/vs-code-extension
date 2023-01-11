@@ -84,14 +84,18 @@
     ],
     "configurationDefaults": {
       "[architectio]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2,
+        "editor.detectIndentation": true,
         "editor.quickSuggestions": {
-          "other": true,
+          "other": false,
           "comments": false,
           "strings": true
         },
-        "editor.autoIndent": "keep"
+        "editor.inlineSuggest.enabled": true,
+        "editor.quickSuggestionsDelay": 0,
+        "editor.tabCompletion": "on",
+        "editor.parameterHints.enabled": true,
+        "editor.inlayHints.enabled": "on",
+        "editor.suggest.preview": true
       }
     }
   },
@@ -109,7 +113,8 @@
     "watch": "webpack --mode development --watch --info-verbosity verbose",
     "test-compile": "yarn clean && tsc -p ./ && webpack --mode development",
     "test": "yarn test-compile && patch-package && sh scripts/e2e.sh",
-    "ui-test": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
+    "run-ui-tests": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
+    "ui-test": "unset NODE_OPTIONS && yarn run-ui-tests",
     "run-in-chromium": "yarn compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
     "initialize": "yarn install && yarn build"
   },
@@ -157,6 +162,7 @@
     "vscode-languageclient": "^8.0.2",
     "vscode-nls": "^3.2.1",
     "vscode-uri": "^2.0.3",
-    "yaml-language-server": "^1.10.0"
+    "yaml-language-server": "^1.10.0",
+    "yaml": "2.0.0-11"
   }
 }
