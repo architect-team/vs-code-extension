@@ -1,3 +1,8 @@
+/* --------------------------------------------------------------------------------------------
+ * Copyright (c) Architect.io. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ * ------------------------------------------------------------------------------------------ */
+
 import os = require("os");
 import path = require("path");
 import { StatusBar, By, WebElement } from "vscode-extension-tester";

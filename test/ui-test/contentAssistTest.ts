@@ -1,3 +1,8 @@
+/* --------------------------------------------------------------------------------------------
+ * Copyright (c) Architect.io. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ * ------------------------------------------------------------------------------------------ */
+
 import { expect } from "chai";
 import {
   WebDriver,
@@ -13,6 +18,7 @@ import { Utilities } from "./Utilities";
 
 /**
  * @author Zbynek Cervinka <zcervink@redhat.com>
+ * @author Devin Sag <devin.sag@architect.io>
  */
 export function contentAssistSuggestionTest(): void {
   describe("Verify content assist suggests right sugestion", () => {

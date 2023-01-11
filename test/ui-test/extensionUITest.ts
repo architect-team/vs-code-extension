@@ -1,3 +1,8 @@
+/* --------------------------------------------------------------------------------------------
+ * Copyright (c) Architect.io. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ * ------------------------------------------------------------------------------------------ */
+
 import { expect } from "chai";
 import { YamlConstants } from "./common/YAMLConstants";
 import {
@@ -10,6 +15,7 @@ import {
 
 /**
  * @author Ondrej Dockal <odockal@redhat.com>
+ * @author Devin Sag <devin.sag@architect.io>
  */
 export function extensionUIAssetsTest(): void {
   describe("Verify extension's base assets available after install", () => {

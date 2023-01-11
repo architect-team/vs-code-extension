@@ -1,3 +1,8 @@
+/* --------------------------------------------------------------------------------------------
+ * Copyright (c) Architect.io. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ * ------------------------------------------------------------------------------------------ */
+
 import {
   WebDriver,
   VSBrowser,
@@ -11,10 +16,11 @@ import { Utilities } from "./Utilities";
 
 /**
  * @author Zbynek Cervinka <zcervink@redhat.com>
+ * @author Devin Sag <devin.sag@architect.io>
  */
 export function schemaIsSetTest(): void {
   describe("Verify that the schema has been loaded", () => {
-    it("The schema has been loaded", async function () {
+    it("The language and schema has been loaded for architect.yml files", async function () {
       this.timeout(30000);
 
       const driver: WebDriver = VSBrowser.instance.driver;
