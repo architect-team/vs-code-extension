@@ -110,7 +110,8 @@
     "test-compile": "yarn clean && tsc -p ./ && webpack --mode development",
     "test": "yarn test-compile && patch-package && sh scripts/e2e.sh",
     "ui-test": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
-    "run-in-chromium": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+    "run-in-chromium": "yarn run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "initialize": "yarn install && yarn build"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
