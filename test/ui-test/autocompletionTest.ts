@@ -53,7 +53,7 @@ export function autocompletionTest(): void {
       await Utilities.sleep(1000);
       const save_file_editor = new TextEditor();
       await save_file_editor.toggleContentAssist(true);
-      await driver.actions().sendKeys(Key.ENTER).perform();
+      await driver.actions().sendKeys(Key.TAB).perform();
 
       const editor = new TextEditor();
       const text = await editor.getText();
