@@ -14,7 +14,11 @@ import {
   RequestType,
   RevealOutputChannelOn,
 } from "vscode-languageclient";
-import { getSchemaContent, IArchitectioSchemaCache } from "./content-provider";
+import {
+  ArchitectioSchemaDocumentContentProvider,
+  getSchemaContent,
+  IArchitectioSchemaCache,
+} from "./content-provider";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace VSCodeContentRequest {
@@ -31,6 +35,7 @@ namespace FSReadFile {
     "fs/readFile"
   );
 }
+
 let client: BaseLanguageClient;
 
 export type ArchitectioLanguageClientConstructor = (
@@ -76,11 +81,20 @@ export async function startClient(
   client.onRequest(VSCodeContentRequest.type, () => {
     return getSchemaContent(runtime.schemaCache);
   });
+
   client.onRequest(FSReadFile.type, (fsPath: string) => {
     return workspace.fs
       .readFile(Uri.file(fsPath))
       .then((uint8array) => new TextDecoder().decode(uint8array));
   });
+
+  context.subscriptions.push(
+    workspace.registerTextDocumentContentProvider(
+      "architectio-schema",
+      new ArchitectioSchemaDocumentContentProvider(runtime.schemaCache)
+    )
+  );
+  context.subscriptions.push(client);
 
   return client;
 }

@@ -4,7 +4,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { workspace } from "vscode";
+import { TextDocumentContentProvider, workspace } from "vscode";
 import {
   xhr,
   configure as configureHttpRequests,
@@ -17,6 +17,14 @@ export interface IArchitectioSchemaCache {
   getETag(): string | undefined;
   putSchema(eTag: string, schemaContent: string): Promise<void>;
   getSchema(): Promise<string | undefined>;
+}
+
+export class ArchitectioSchemaDocumentContentProvider
+  implements TextDocumentContentProvider {
+  constructor(private readonly schemaCache: IArchitectioSchemaCache) {}
+  async provideTextDocumentContent(): Promise<string> {
+    return getSchemaContent(this.schemaCache);
+  }
 }
 
 export async function getSchemaContent(
