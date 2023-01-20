@@ -23,7 +23,9 @@
     "name": "Architect.io",
     "url": "https://Architect.io"
   },
-  "contributors": ["devin.sag@architect.io"],
+  "contributors": [
+    "devin.sag@architect.io"
+  ],
   "engines": {
     "npm": ">=7.0.0",
     "vscode": "^1.69.2"
@@ -147,7 +149,8 @@
     "ui-test": "unset NODE_OPTIONS && yarn run-ui-tests",
     "run-in-chromium": "yarn compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
     "build-server": "cd ./node_modules/architectio-language-server && yarn install && yarn build",
-    "initialize": "yarn install && yarn build-server && yarn build"
+    "initialize": "yarn install && yarn build-server && yarn build",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
