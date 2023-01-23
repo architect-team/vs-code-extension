@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=architect.io.architectio"><img src="https://img.shields.io/visual-studio-marketplace/v/architect.io.architectio?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code" alt="Build" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=architect.io.architect-vscode"><img src="https://img.shields.io/visual-studio-marketplace/v/architect.io.architect-vscode?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code" alt="Build" /></a>
   <a href="https://github.com/architect-team/vs-code-extension/blob/main/LICENSE"><img src="https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge" alt="License" /></a>
 </p>
 

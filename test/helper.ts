@@ -23,11 +23,11 @@ export let documentEol: string;
 export let platformEol: string;
 
 /**
- * Activates the architect.io.architectio extension
+ * Activates the architect.io.architect-vscode extension
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function activate(docUri: vscode.Uri): Promise<any> {
-  const ext = vscode.extensions.getExtension("architect.io.architectio");
+  const ext = vscode.extensions.getExtension("architect.io.architect-vscode");
   const activation = await ext.activate();
   try {
     doc = await vscode.workspace.openTextDocument(docUri);

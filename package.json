@@ -1,9 +1,9 @@
 {
-  "name": "architectio",
+  "name": "architect-vscode",
   "displayName": "Architect.io",
   "description": "A dynamic microservices framework for building, connecting, and deploying cloud-native applications",
   "publisher": "Architect.io",
-  "homepage": "https://Architect.io",
+  "homepage": "https://architect.io",
   "version": "1.0.0",
   "repository": {
     "type": "git",
