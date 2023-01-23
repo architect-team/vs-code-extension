@@ -18,9 +18,9 @@ const config = {
     __filename: false,
   },
   entry: {
-    extension: "./src/node/yamlClientMain.ts", // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
+    extension: "./src/node/client-main", // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
     languageserver:
-      "./node_modules/yaml-language-server/out/server/src/server.js",
+      "./node_modules/architectio-language-server/out/server/src/server.js",
   },
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
@@ -62,7 +62,7 @@ const clientWeb = {
   mode: "none", // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
   target: "webworker", // extensions run in a webworker context
   entry: {
-    "extension-web": "./src/webworker/yamlClientMain.ts",
+    "extension-web": "./src/webworker/client-main",
   },
   output: {
     filename: "extension-web.js",
@@ -120,7 +120,7 @@ const serverWeb = {
   target: "webworker", // extensions run in a webworker context
   entry: {
     "languageserver-web":
-      "./node_modules/yaml-language-server/lib/esm/webworker/yamlServerMain",
+      "./node_modules/architectio-language-server/lib/esm/webworker/yamlServerMain",
   },
   output: {
     filename: "languageserver-web.js",

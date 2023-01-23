@@ -1,5 +1,6 @@
 /* --------------------------------------------------------------------------------------------
  * Copyright (c) Red Hat, Inc. All rights reserved.
+ * Copyright (c) Architect.io. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
@@ -12,6 +13,8 @@ export function run(): Promise<void> {
   const mocha = new Mocha({
     ui: "bdd",
     timeout: 10000,
+    color: true,
+    reporter: "spec",
   });
 
   const testsRoot = path.resolve(__dirname, "..");

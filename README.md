@@ -1,7 +1,12 @@
-# Architect.io YAML
-[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/architect.io.architect-yml?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=architect.io.architect.yml)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/architect.io.architect-yaml?style=for-the-badge&logo=microsoft)](https://marketplace.visualstudio.com/items?itemName=architect.io.architect-yaml)
-[![License](https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge)](https://github.com/architect-team/vs-code-extension/blob/main/LICENSE)
+<p align="center">
+  <img width="320" alt="Architect Logo" src="https://cdn.architect.io/logo/horizontal-inverted.png">
+</p>
+
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=architect.io.architect-vscode"><img src="https://img.shields.io/visual-studio-marketplace/v/architect.io.architect-vscode?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code" alt="Build" /></a>
+  <a href="https://github.com/architect-team/vs-code-extension/blob/main/LICENSE"><img src="https://img.shields.io/github/license/architect-team/vs-code-extension?style=for-the-badge" alt="License" /></a>
+</p>
+
 
 Adds YAML Language support, syntax highlighting and validation when editing or creating `architect.yml` files in Visual Studio Code.
 

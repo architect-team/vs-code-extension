@@ -5,27 +5,29 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ExtensionContext } from "vscode";
-import { LanguageClientOptions } from "vscode-languageclient";
+import {
+  BaseLanguageClient,
+  LanguageClientOptions,
+} from "vscode-languageclient";
 import {
   startClient,
-  LanguageClientConstructor,
+  ArchitectioLanguageClientConstructor,
   RuntimeEnvironment,
 } from "../extension";
 import { LanguageClient } from "vscode-languageclient/browser";
-import { SchemaExtensionAPI } from "../schema-extension-api";
-import { IJSONSchemaCache } from "../json-schema-content-provider";
+import { IArchitectioSchemaCache } from "../content-provider";
 
 // this method is called when vs code is activated
 export async function activate(
   context: ExtensionContext
-): Promise<SchemaExtensionAPI> {
+): Promise<BaseLanguageClient> {
   const extensionUri = context.extensionUri;
   const serverMain = extensionUri.with({
     path: extensionUri.path + "/dist/languageserver-web.js",
   });
   try {
     const worker = new Worker(serverMain.toString());
-    const newLanguageClient: LanguageClientConstructor = (
+    const newArchitectioLanguageClient: ArchitectioLanguageClientConstructor = (
       id: string,
       name: string,
       clientOptions: LanguageClientOptions
@@ -33,16 +35,16 @@ export async function activate(
       return new LanguageClient(id, name, clientOptions, worker);
     };
 
-    const schemaCache: IJSONSchemaCache = {
+    const architectSchemaCache: IArchitectioSchemaCache = {
       getETag: () => undefined,
       getSchema: () => undefined,
       putSchema: () => Promise.resolve(),
     };
 
     const runtime: RuntimeEnvironment = {
-      schemaCache,
+      schemaCache: architectSchemaCache,
     };
-    return startClient(context, newLanguageClient, runtime);
+    return await startClient(context, newArchitectioLanguageClient, runtime);
   } catch (e) {
     console.log(e);
   }

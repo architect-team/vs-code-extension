@@ -1,5 +1,6 @@
 /* --------------------------------------------------------------------------------------------
  * Copyright (c) Red Hat, Inc. All rights reserved.
+ * Copyright (c) Architect.io. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
@@ -8,77 +9,144 @@ import {
   getDocUri,
   activate,
   testCompletion,
-  updateSettings,
   testCompletionNotEmpty,
-  resetSettings,
 } from "./helper";
 import * as path from "path";
+import { YamlConstants } from "./ui-test/common/YAMLConstants";
 
-describe("Completion should work in multiple different scenarios", () => {
-  const docUri = getDocUri(path.join("completion", "completion.yaml"));
-  const travisUri = getDocUri(path.join("completion", ".travis.yml"));
+describe("Completion", () => {
+  const completion_uri_yml = getDocUri(
+    path.join("completion", YamlConstants.UI_MOCK_FILES.YML)
+  );
+  const completion_uri_yaml = getDocUri(
+    path.join("completion", YamlConstants.UI_MOCK_FILES.YAML)
+  );
+  const completion_uri_wildcard_yaml = getDocUri(
+    path.join("completion", YamlConstants.UI_MOCK_FILES.WILDCARD_YAML)
+  );
+  const completion_uri_wildcard_yml = getDocUri(
+    path.join("completion", YamlConstants.UI_MOCK_FILES.WILDCARD_YML)
+  );
 
-  afterEach(async () => {
-    await resetSettings("schemas", {});
-    await resetSettings("schemaStore.enable", true);
+  const expected_completion = {
+    items: [
+      {
+        label: "architect.yml",
+        kind: vscode.CompletionItemKind.Class,
+      },
+      {
+        label: "artifact_image",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "author",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "dependencies",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "description",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "homepage",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "interfaces",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "keywords",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "name",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "outputs",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "parameters",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "secrets",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "services",
+        kind: vscode.CompletionItemKind.Property,
+      },
+      {
+        label: "tasks",
+        kind: vscode.CompletionItemKind.Property,
+      },
+    ],
+  };
+
+  it("completion generates value select options - architect.yml", async () => {
+    await activate(completion_uri_yml);
+    await testCompletionNotEmpty(completion_uri_yml, new vscode.Position(0, 0));
   });
 
-  it("completion works with local schema", async () => {
-    await activate(docUri);
-    const schemaPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "test",
-      "testFixture",
-      "schemas",
-      "basic_completion_schema.json"
+  it("completion generates value select options - architect.yaml", async () => {
+    await activate(completion_uri_yaml);
+    await testCompletionNotEmpty(
+      completion_uri_yaml,
+      new vscode.Position(0, 0)
     );
-    await updateSettings("schemas", {
-      [vscode.Uri.file(schemaPath).toString()]: "completion.yaml",
-    });
-    await testCompletion(docUri, new vscode.Position(0, 0), {
-      items: [
-        {
-          label: "my_key",
-          kind: 9,
-        },
-      ],
-    });
   });
 
-  it("completion works with external schema", async () => {
-    await activate(docUri);
-    await updateSettings("schemas", {
-      "https://gist.githubusercontent.com/JPinkney/4c4a43977932402c2a09a677f29287c3/raw/4d4f638b37ddeda84fb27e6b2cf14d3dc0793029/a.yaml":
-        "completion.yaml",
-    });
-    await testCompletion(docUri, new vscode.Position(0, 0), {
-      items: [
-        {
-          label: "version",
-          kind: 9,
-        },
-      ],
-    });
+  it("completion generates value select options - *.architect.yml", async () => {
+    await activate(completion_uri_wildcard_yml);
+    await testCompletionNotEmpty(
+      completion_uri_wildcard_yml,
+      new vscode.Position(0, 0)
+    );
   });
 
-  it("completion works with schema store schema", async () => {
-    await activate(travisUri);
-    await updateSettings("schemaStore.enable", true);
-    await testCompletionNotEmpty(travisUri, new vscode.Position(0, 0));
+  it("completion generates value select options - *.architect.yaml", async () => {
+    await activate(completion_uri_wildcard_yaml);
+    await testCompletionNotEmpty(
+      completion_uri_wildcard_yaml,
+      new vscode.Position(0, 0)
+    );
   });
 
-  it("completion does not work with schema store disabled and no schemas set", async () => {
-    await activate(travisUri);
-    await updateSettings("schemaStore.enable", false);
-    await testCompletion(travisUri, new vscode.Position(0, 0), {
-      items: [
-        {
-          label: "Inline schema",
-          kind: 0,
-        },
-      ],
-    });
+  it("completion suggests a selection choice from schema properties - architect.yml", async () => {
+    await testCompletion(
+      completion_uri_yml,
+      new vscode.Position(0, 0),
+      expected_completion
+    );
+  });
+
+  it("completion suggests a selection choice from schema properties - architect.yaml", async () => {
+    await testCompletion(
+      completion_uri_yaml,
+      new vscode.Position(0, 0),
+      expected_completion
+    );
+  });
+
+  it("completion suggests a selection choice from schema properties - *.architect.yml", async () => {
+    await testCompletion(
+      completion_uri_wildcard_yml,
+      new vscode.Position(0, 0),
+      expected_completion
+    );
+  });
+
+  it("completion suggests a selection choice from schema properties - *.architect.yaml", async () => {
+    await testCompletion(
+      completion_uri_wildcard_yaml,
+      new vscode.Position(0, 0),
+      expected_completion
+    );
   });
 });

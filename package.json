@@ -1,9 +1,9 @@
 {
-  "name": "architect-yml",
+  "name": "architect-vscode",
   "displayName": "Architect.io",
   "description": "A dynamic microservices framework for building, connecting, and deploying cloud-native applications",
   "publisher": "Architect.io",
-  "homepage": "https://Architect.io",
+  "homepage": "https://architect.io",
   "version": "1.0.0",
   "repository": {
     "type": "git",
@@ -16,145 +16,166 @@
     "virtualWorkspaces": true
   },
   "activationEvents": [
-    "onLanguage:yaml"
+    "onLanguage:architectio"
   ],
   "license": "MIT",
   "author": {
-    "name": "Devin Sag",
-    "email": "devin.sag@architect.io",
-    "url": "https://github.com/devinsag"
+    "name": "Architect.io",
+    "url": "https://Architect.io"
   },
+  "contributors": [
+    "devin.sag@architect.io"
+  ],
   "engines": {
     "npm": ">=7.0.0",
-    "vscode": "^1.63.0"
+    "vscode": "^1.69.2"
   },
   "categories": [
     "Other",
-    "Programming Languages",
-    "Linters",
-    "Snippets",
-    "Formatters"
+    "Programming Languages"
   ],
-  "icon": "icon/icon.png",
+  "icon": "icon/logo.png",
   "galleryBanner": {
     "color": "#55CB64",
     "theme": "dark"
   },
   "tags": [
     "architect",
-    "architect.io",
-    "YAML",
+    "Architect.io",
+    "architectio",
     "yaml",
-    "yml",
-    "YML"
+    "yml"
   ],
   "keywords": [
-    "YAML",
     "yml",
-    "YML",
     "yaml",
     "continuous integration",
     "CI/CD",
     "Architect.io",
-    "architect"
+    "architect",
+    "architectio"
   ],
   "contributes": {
-    "contributes": {
-      "languages": [
-        {
-          "id": "yaml",
-          "aliases": [
-            "Architect.io",
-            "architect.io",
-            "architect-yml",
-            "Architect-yml"
-          ],
-          "filenamePatterns": [
-            "architect.yml",
-            "architect.yaml"
-          ],
-          "extensions": [
-            ".yml",
-            ".yaml"
-          ],
-          "configuration": "./language-configuration.json"
-        }
-      ],
-      "grammars": [
-        {
-          "language": "yaml",
-          "scopeName": "source.yaml",
-          "path": "./syntaxes/yaml.tmLanguage.json"
-        }
-      ]
+    "languages": [
+      {
+        "id": "architectio",
+        "icon": {
+          "light": "./icon/language.ico",
+          "dark": "./icon/language.ico"
+        },
+        "filenamePatterns": [
+          "architect.yml",
+          "*.architect.yml",
+          "*.architect.yaml",
+          "architect.yaml"
+        ],
+        "aliases": [
+          "Architect.io",
+          "architect.io",
+          "architectio"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "architectio",
+        "scopeName": "source.architectio",
+        "path": "./syntaxes/architectio.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[architectio]": {
+        "editor.detectIndentation": true,
+        "editor.quickSuggestions": {
+          "other": false,
+          "comments": false,
+          "strings": true
+        },
+        "editor.inlineSuggest.enabled": true,
+        "editor.quickSuggestionsDelay": 0,
+        "editor.tabCompletion": "on",
+        "editor.parameterHints.enabled": true,
+        "editor.inlayHints.enabled": "on",
+        "editor.acceptSuggestionOnEnter": "off",
+        "editor.suggest.preview": true,
+        "editor.suggest.showClasses": false,
+        "editor.suggest.showColors": false,
+        "editor.suggest.showConstants": false,
+        "editor.suggest.showConstructors": false,
+        "editor.suggest.showCustomcolors": false,
+        "editor.suggest.showDeprecated": false,
+        "editor.suggest.showEnumMembers": true,
+        "editor.suggest.showEnums": false,
+        "editor.suggest.showEvents": false,
+        "editor.suggest.showFields": false,
+        "editor.suggest.showFiles": false,
+        "editor.suggest.showFolders": false,
+        "editor.suggest.showFunctions": false,
+        "editor.suggest.showInterfaces": false,
+        "editor.suggest.showIssues": false,
+        "editor.suggest.showKeywords": true,
+        "editor.suggest.showMethods": false,
+        "editor.suggest.showModules": false,
+        "editor.suggest.showOperators": false,
+        "editor.suggest.showProperties": true,
+        "editor.suggest.showReferences": true,
+        "editor.suggest.showSnippets": true,
+        "editor.suggest.showStructs": true,
+        "editor.suggest.showTypeParameters": false,
+        "editor.suggest.showVariables": false,
+        "editor.suggest.showValues": true,
+        "editor.suggest.showWords": false,
+        "editor.suggest.showUsers": false,
+        "editor.suggest.showUnits": false
+      }
     }
   },
   "main": "./dist/extension",
   "browser": "./dist/extension-web",
-  "configuration": {
-    "title:": "YAML",
-    "properties": {
-      "yaml.format.bracketSpacing": {
-        "type": "boolean",
-        "default": true,
-        "description": "Print spaces between brackets in objects"
-      },
-      "yaml.format.proseWrap": {
-        "type": "string",
-        "default": "preserve",
-        "enum": [
-          "preserve",
-          "never",
-          "always"
-        ],
-        "description": "Always: wrap prose if it exceeds the print width, Never: never wrap the prose, Preserve: wrap prose as-is"
-      },
-      "yaml.format.printWidth": {
-        "type": "integer",
-        "default": 80,
-        "description": "Specify the line length that the printer will wrap on"
-      }
-    }
-  },
   "extensionDependencies": [],
   "scripts": {
-    "build": "yarn run clean && yarn run lint --fix && yarn run vscode:prepublish",
+    "build": "yarn clean && yarn lint && yarn vscode:prepublish",
     "check-dependencies": "node ./scripts/check-dependencies.js",
     "clean": "rimraf out && rimraf dist",
     "compile": "webpack --mode none",
     "format": "prettier --write .",
-    "lint": "eslint -c .eslintrc.js --ext .ts src test",
-    "test": "yarn test-compile && sh scripts/e2e.sh",
-    "ui-test": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
+    "lint": "eslint -c .eslintrc.js --ext .ts src test --fix",
     "vscode:prepublish": "webpack --mode production",
     "watch": "webpack --mode development --watch --info-verbosity verbose",
     "test-compile": "yarn clean && tsc -p ./ && webpack --mode development",
-    "run-in-chromium": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+    "test": "yarn test-compile && sh scripts/e2e.sh",
+    "run-ui-tests": "yarn test-compile && extest setup-and-run -y out/test/ui-test/allTestsSuite.js -c 1.69.2",
+    "ui-test": "unset NODE_OPTIONS && yarn run-ui-tests",
+    "run-in-chromium": "yarn compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "build-server": "cd ./node_modules/architectio-language-server && yarn install && yarn build",
+    "initialize": "yarn install && yarn build-server && yarn build",
+    "package": "vsce package"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.12",
+    "@types/chai": "^4.3.4",
     "@types/fs-extra": "^9.0.6",
-    "@types/mocha": "^2.2.48",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^12.12.6",
-    "@types/sinon": "^10.0.6",
-    "@types/sinon-chai": "^3.2.5",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
     "@types/vscode": "^1.63.0",
     "@types/webpack": "^4.4.10",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
-    "@vscode/test-web": "0.0.11",
+    "@vscode/test-web": "0.0.33",
     "buffer": "^6.0.3",
-    "chai": "^4.2.0",
+    "chai": "^4.3.7",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "glob": "^7.1.6",
-    "mocha": "^9.1.2",
+    "mocha": "^10.2.0",
     "path-browserify": "^1.0.1",
     "prettier": "2.2.1",
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
-    "sinon": "^12.0.1",
+    "sinon": "^15.0.1",
     "sinon-chai": "^3.7.0",
     "ts-loader": "^9.2.5",
     "ts-node": "^3.3.0",
@@ -162,17 +183,17 @@
     "umd-compat-loader": "^2.1.2",
     "url": "^0.11.0",
     "util": "^0.12.4",
-    "vscode-extension-tester": "^4.2.5",
-    "vscode-test": "^1.4.0",
+    "vscode-extension-tester": "^5.2.1",
+    "vscode-test": "^1.6.1",
     "webpack": "^5.52.1",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
     "request-light": "^0.5.7",
-    "vscode-languageclient": "7.0.0",
+    "vscode-languageclient": "^8.0.2",
     "vscode-nls": "^3.2.1",
     "vscode-uri": "^2.0.3",
-    "yaml-language-server": "next"
+    "architectio-language-server": "architect-team/architectio-language-server#v1.0.0"
   }
 }

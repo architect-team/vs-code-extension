@@ -1,3 +1,8 @@
+/* --------------------------------------------------------------------------------------------
+ * Copyright (c) Architect.io. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ * ------------------------------------------------------------------------------------------ */
+
 import { expect } from "chai";
 import { YamlConstants } from "./common/YAMLConstants";
 import {
@@ -10,6 +15,7 @@ import {
 
 /**
  * @author Ondrej Dockal <odockal@redhat.com>
+ * @author Devin Sag <devin.sag@architect.io>
  */
 export function extensionUIAssetsTest(): void {
   describe("Verify extension's base assets available after install", () => {
@@ -27,13 +33,13 @@ export function extensionUIAssetsTest(): void {
       )) as ExtensionsViewSection;
     });
 
-    it("YAML extension is installed", async function () {
+    it("Architect.io extension is installed", async function () {
       this.timeout(20000);
       const item = (await section.findItem(
-        `@installed ${YamlConstants.YAML_NAME}`
+        `@installed ${YamlConstants.UI_MOCK_LANGUAGE}`
       )) as ExtensionsViewItem;
       expect(item).not.undefined;
-      expect(await item.getTitle()).to.equal(YamlConstants.YAML_NAME);
+      expect(await item.getTitle()).to.equal(YamlConstants.UI_MOCK_LANGUAGE);
     });
 
     afterEach(async function () {

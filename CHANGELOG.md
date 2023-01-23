@@ -5,3 +5,4 @@ All notable changes to the "architect-yml" extension will be documented in this 
 ## [1.0.0]
 
 - Initial release
+

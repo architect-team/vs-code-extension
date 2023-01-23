@@ -1,14 +1,15 @@
 /* --------------------------------------------------------------------------------------------
  * Copyright (c) Red Hat, Inc. All rights reserved.
  * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Copyright (c) Architect.io. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
 import * as vscode from "vscode";
 import * as path from "path";
 import assert = require("assert");
-import { CommonLanguageClient } from "vscode-languageclient/lib/common/commonClient";
 import {
+  BaseLanguageClient,
   MessageTransports,
   ProtocolRequestType,
   ProtocolRequestType0,
@@ -22,11 +23,11 @@ export let documentEol: string;
 export let platformEol: string;
 
 /**
- * Activates the redhat.vscode-yaml extension
+ * Activates the architect.io.architect-vscode extension
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function activate(docUri: vscode.Uri): Promise<any> {
-  const ext = vscode.extensions.getExtension("architect-yml");
+  const ext = vscode.extensions.getExtension("architect.io.architect-vscode");
   const activation = await ext.activate();
   try {
     doc = await vscode.workspace.openTextDocument(docUri);
@@ -54,22 +55,6 @@ export const getDocUri = (p: string): vscode.Uri => {
   return vscode.Uri.file(getDocPath(p));
 };
 
-export const updateSettings = (
-  setting: string,
-  value: unknown
-): Thenable<void> => {
-  const yamlConfiguration = vscode.workspace.getConfiguration("yaml", null);
-  return yamlConfiguration.update(setting, value, false);
-};
-
-export const resetSettings = (
-  setting: string,
-  value: unknown
-): Thenable<void> => {
-  const yamlConfiguration = vscode.workspace.getConfiguration("yaml", null);
-  return yamlConfiguration.update(setting, value, false);
-};
-
 export async function setTestContent(content: string): Promise<boolean> {
   const all = new vscode.Range(
     doc.positionAt(0),
@@ -93,17 +78,18 @@ export async function testCompletion(
   const sortedActualCompletionList = actualCompletionList.items.sort((a, b) =>
     a.label > b.label ? 1 : -1
   );
-  assert.equal(
+  assert.strictEqual(
     actualCompletionList.items.length,
     expectedCompletionList.items.length,
     "Completion List doesn't have expected size"
   );
+
   expectedCompletionList.items
     .sort((a, b) => (a.label > b.label ? 1 : -1))
     .forEach((expectedItem, i) => {
       const actualItem = sortedActualCompletionList[i];
-      assert.equal(actualItem.label, expectedItem.label);
-      assert.equal(actualItem.kind, expectedItem.kind);
+      assert.strictEqual(actualItem.label, expectedItem.label);
+      assert.strictEqual(actualItem.kind, expectedItem.kind);
     });
 }
 
@@ -112,13 +98,13 @@ export async function testCompletionNotEmpty(
   position: vscode.Position
 ): Promise<void> {
   // Executing the command `vscode.executeCompletionItemProvider` to simulate triggering completion
-  const actualCompletionList = (await vscode.commands.executeCommand(
+  const actualCompletionList: vscode.CompletionList = await vscode.commands.executeCommand(
     "vscode.executeCompletionItemProvider",
     docUri,
     position
-  )) as vscode.CompletionList;
+  );
 
-  assert.notEqual(actualCompletionList.items.length, 0);
+  assert.notStrictEqual(actualCompletionList.items.length, 0);
 }
 
 export async function testHover(
@@ -127,16 +113,16 @@ export async function testHover(
   expectedHover: vscode.Hover[]
 ): Promise<void> {
   // Executing the command `vscode.executeCompletionItemProvider` to simulate triggering completion
-  const actualHoverResults = (await vscode.commands.executeCommand(
+  const actualHoverResults: vscode.Hover[] = await vscode.commands.executeCommand(
     "vscode.executeHoverProvider",
     docUri,
     position
-  )) as vscode.Hover[];
+  );
 
-  assert.equal(actualHoverResults.length, expectedHover.length);
+  assert.strictEqual(actualHoverResults.length, expectedHover.length);
   expectedHover.forEach((expectedItem, i) => {
     const actualItem = actualHoverResults[i];
-    assert.equal(
+    assert.strictEqual(
       (actualItem.contents[i] as vscode.MarkdownString).value,
       expectedItem.contents[i]
     );
@@ -149,13 +135,13 @@ export async function testDiagnostics(
 ): Promise<void> {
   const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
 
-  assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
+  assert.strictEqual(actualDiagnostics.length, expectedDiagnostics.length);
 
   expectedDiagnostics.forEach((expectedDiagnostic, i) => {
     const actualDiagnostic = actualDiagnostics[i];
-    assert.equal(actualDiagnostic.message, expectedDiagnostic.message);
-    assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range);
-    assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity);
+    assert.strictEqual(actualDiagnostic.message, expectedDiagnostic.message);
+    assert.deepStrictEqual(actualDiagnostic.range, expectedDiagnostic.range);
+    assert.strictEqual(actualDiagnostic.severity, expectedDiagnostic.severity);
   });
 }
 
@@ -175,7 +161,7 @@ export class TestMemento implements vscode.Memento {
   }
 }
 
-export class TestLanguageClient extends CommonLanguageClient {
+export class TestLanguageClient extends BaseLanguageClient {
   constructor() {
     super("test", "test", {});
   }

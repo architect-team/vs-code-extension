@@ -12,6 +12,18 @@
       "preLaunchTask": "compile typescript"
     },
     {
+      "name": "Launch Web Extension",
+      "type": "extensionHost",
+      "debugWebWorkerHost": true,
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionDevelopmentKind=web"
+      ],
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "preLaunchTask": "compile webpack"
+    },
+    {
       "name": "Extension Tests",
       "type": "extensionHost",
       "request": "launch",
@@ -23,19 +35,7 @@
         "--extensionTestsPath=${workspaceFolder}/out/test",
         "${workspaceRoot}/test/testFixture"
       ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"]
-    },
-    {
-      "name": "Launch Web Extension",
-      "type": "extensionHost",
-      "debugWebWorkerHost": true,
-      "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionDevelopmentKind=web"
-      ],
-      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-      "preLaunchTask": "compile webpack"
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
     },
     {
       "name": "Debug UI Tests",
@@ -51,7 +51,7 @@
         "${workspaceFolder}/src/ui-test/.mocharc-debug.js"
       ],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
     }
   ]
 }

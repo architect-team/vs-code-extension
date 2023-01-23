@@ -1,47 +1,34 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Red Hat, Inc. All rights reserved.
+ *  Copyright (c) Architect.io. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TextDocumentContentProvider, Uri, workspace } from "vscode";
+import { TextDocumentContentProvider, workspace } from "vscode";
 import {
   xhr,
   configure as configureHttpRequests,
   getErrorStatusDescription,
   XHRResponse,
 } from "request-light";
-import { SchemaExtensionAPI } from "./schema-extension-api";
-import { ARCHITECT_SCHEMA_URI } from "./schema-extension-api";
+import { ARCHITECTIO_SCHEMA_URI } from "./constants";
 
-export interface IJSONSchemaCache {
+export interface IArchitectioSchemaCache {
   getETag(): string | undefined;
   putSchema(eTag: string, schemaContent: string): Promise<void>;
   getSchema(): Promise<string | undefined>;
 }
 
-export class JSONSchemaDocumentContentProvider
+export class ArchitectioSchemaDocumentContentProvider
   implements TextDocumentContentProvider {
-  constructor(
-    private readonly schemaCache: IJSONSchemaCache,
-    private readonly schemaApi: SchemaExtensionAPI
-  ) {}
-
-  async provideTextDocumentContent(uri: Uri): Promise<string> {
-    if (uri.fragment) {
-      const origUri = uri.fragment;
-      let content = this.schemaApi.requestCustomSchemaContent(origUri);
-      content = await Promise.resolve(content);
-      // prettify JSON
-      if (content.indexOf("\n") === -1) {
-        content = JSON.stringify(JSON.parse(content), null, 2);
-      }
-      return content;
-    }
+  constructor(private readonly schemaCache: IArchitectioSchemaCache) {}
+  async provideTextDocumentContent(): Promise<string> {
+    return getSchemaContent(this.schemaCache);
   }
 }
 
-export async function getJsonSchemaContent(
-  schemaCache: IJSONSchemaCache
+export async function getSchemaContent(
+  schemaCache: IArchitectioSchemaCache
 ): Promise<string> {
   const cachedETag: string = schemaCache.getETag();
 
@@ -57,7 +44,7 @@ export async function getJsonSchemaContent(
   if (cachedETag) {
     headers["If-None-Match"] = cachedETag;
   }
-  return xhr({ url: ARCHITECT_SCHEMA_URI, followRedirects: 5, headers })
+  return xhr({ url: ARCHITECTIO_SCHEMA_URI, followRedirects: 5, headers })
     .then(async (response) => {
       // cache only if server supports 'etag' header
       const etag = response.headers["etag"];
@@ -76,10 +63,14 @@ export async function getJsonSchemaContent(
         // ensure that we return content even if cache doesn't have it
         if (content === undefined) {
           console.error(
-            `Cannot read cached content for: ${ARCHITECT_SCHEMA_URI}, trying to load again`
+            `Cannot read cached content for: ${ARCHITECTIO_SCHEMA_URI}, trying to load again`
           );
           delete headers["If-None-Match"];
-          return xhr({ url: ARCHITECT_SCHEMA_URI, followRedirects: 5, headers })
+          return xhr({
+            url: ARCHITECTIO_SCHEMA_URI,
+            followRedirects: 5,
+            headers,
+          })
             .then((response) => {
               return response.responseText;
             })
