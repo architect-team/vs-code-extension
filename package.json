@@ -194,6 +194,6 @@
     "vscode-languageclient": "^8.0.2",
     "vscode-nls": "^3.2.1",
     "vscode-uri": "^2.0.3",
-    "architectio-language-server": "https://github.com/architect-team/architectio-language-server.git"
+    "architectio-language-server": "architect-team/architectio-language-server#v1.0.0"
   }
 }

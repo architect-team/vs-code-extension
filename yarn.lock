@@ -689,9 +689,9 @@ arch@^2.1.1:
   resolved "https://registry.yarnpkg.com/arch/-/arch-2.2.0.tgz#1bc47818f305764f23ab3306b0bfc086c5a29d11"
   integrity sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==
 
-"architectio-language-server@https://github.com/architect-team/architectio-language-server.git":
-  version "1.12.0"
-  resolved "https://github.com/architect-team/architectio-language-server.git#7f337a23b9780d75b6a09d44bd90eac1ab4a2dde"
+architectio-language-server@architect-team/architectio-language-server#v1.0.0:
+  version "1.0.0"
+  resolved "https://codeload.github.com/architect-team/architectio-language-server/tar.gz/5c8376675dd3c796bd99b7b3c1ea1fd9063bffda"
   dependencies:
     ajv "^8.11.0"
     request-light "^0.5.7"
