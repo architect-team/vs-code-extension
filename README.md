@@ -10,14 +10,14 @@
 
 Adds YAML Language support, syntax highlighting and validation when editing or creating `architect.yml` files in Visual Studio Code.
 
-Architect is the world's first [DevOps-as-a-Service](//architect.io/product) toolset designed to help democratize environment provisioning for engineers. With Architect, anyone can deploy any service, anywhere, for any reason with the push of a button.
+Architect is the world's first [DevOps-as-a-Service](https://www.architect.io/platform/) toolset designed to help democratize environment provisioning for engineers. With Architect, anyone can deploy any service, anywhere, for any reason with the push of a button.
 
 Our unique approach to continuous delivery is powered by an embedded dependency resolver. By simply asserting your microservice dependenies, Architect is able to build a graph of your application and deploy the entire stack to your favorite cloud provider.
 
-Architect's CLI, which provides the full developer experience needed to create [components](//docs.architect.io) and operate local [environments](//docs.architect.io/deployments/local-environments), is fully open-source. The CLI can deploy components locally using docker-compose, enrich the deployments with components found in Architect's Cloud registry, and allows developers to publish their own components to the registry both publicly and privately for free.
+Architect's CLI, which provides the full developer experience needed to create [components](https://docs.architect.io/components/architect-yml) and operate local [environments](https://docs.architect.io/deployments/local-environments), is fully open-source. The CLI can deploy components locally using docker-compose, enrich the deployments with components found in Architect's Cloud registry, and allows developers to publish their own components to the registry both publicly and privately for free.
 
 # Requirements
-* [**Node.js** `v12`](//nodejs.org/en/download/) or higher must be installed
+* [**Node.js** `v12`](https://nodejs.org/en/download/) or higher must be installed
 
 # YAML Schema
 For additional information describing the full specification of the architect.yml configuration file, please view [the architect yml reference guide](https://docs.architect.io/reference/architect-yml/).
